@@ -13,7 +13,7 @@ module.exports = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       colors: {
-        'blue-dark': '#12182B',
+        'blue-dark': '#252d45',
         'blue': '#394F6B',
         'green-dark': '#329D9C',
         'green': '#7BE495',
@@ -21,6 +21,7 @@ module.exports = {
       },
       backgroundImage: {
         "paper": "repeating-linear-gradient(#12182B 0px, #12182B 29px, #7BE495 30px)",
+        "green-yellow": "linear-gradient(45deg, #329D9C 0%, rgba(123,228,149,1) 100%)",
       }
     },
   },
