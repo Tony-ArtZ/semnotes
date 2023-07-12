@@ -4,10 +4,11 @@ import {HiOutlineMail, HiLockClosed} from "react-icons/hi";
 import {AiOutlineGoogle} from "react-icons/ai";
 import {signIn} from "next-auth/react";
 import {useState} from "react";
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 
 export default function Login() {
   const [formValues, setFormValues] = useState({email:"", password:""});
+  const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 
@@ -18,13 +19,23 @@ export default function Login() {
 
   const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await signIn("credentials", {
-      redirect: false,
-      email: formValues.email,
-      password: formValues.password,
-      callbackUrl,
-    })
-    console.log(res)
+    try {
+      const res = await signIn("credentials", {
+        redirect: false,
+        email: formValues.email,
+        password: formValues.password,
+        callbackUrl,
+      })
+      console.log(res)
+      if(!res?.error) {
+        router.push(callbackUrl);
+      }
+      else {
+        throw (res?.error);
+      }
+  } catch (error) {
+
+  }
   }
 
   return (
@@ -35,14 +46,14 @@ export default function Login() {
                 <span className="font-bold"> Email:</span>
                 <div className="flex flex-row items-center px-4 border-b-4 shadow-inner focus-within:outline-green outline-2 focus-within:outline border-green bg-blue-dark">
                     <HiOutlineMail className="text-xl"/>
-                    <input required name="email" onChange={handleInputChange} placeholder="Email" type="email" className="w-64 h-12 px-4 bg-transparent peer focus:outline-none"/>
+                    <input required name="email" onChange={handleInputChange} placeholder="Email" type="email" className="w-64 h-12 bg-blue-dark px-4 bg-transparent peer focus:outline-none"/>
                 </div>
             </label>
             <label>
                 <span className="font-bold"> Password:</span>
                 <div className="flex flex-row items-center px-4 border-b-4 shadow-inner focus-within:outline-green outline-2 focus-within:outline border-green bg-blue-dark">
                     <HiLockClosed className="text-xl"/>
-                    <input required name="password" onChange={handleInputChange} placeholder="Password" type="password" className="w-64 h-12 px-4 bg-transparent peer focus:outline-none"/>
+                    <input required name="password" onChange={handleInputChange} placeholder="Password" type="password" className="w-64 bg-blue-dark h-12 px-4 bg-transparent peer focus:outline-none"/>
                 </div>
             </label>
             <div className="w-40 h-16 p-1 mt-6 shrink-0 bg-green-yellow rounded-xl">
