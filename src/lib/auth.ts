@@ -23,7 +23,7 @@ export const authOptions: NextAuthOptions = {
         if(!credentials?.email || !credentials?.password) {
           return null;
         }
-        const user = prisma.user.findUnique ({
+        const user = await prisma.user.findUnique ({
           where: {
             email: credentials.email,
           }
@@ -35,7 +35,7 @@ export const authOptions: NextAuthOptions = {
 
         return {
           id: user.id,
-          username: user.username,
+          username: user.name,
           email: user.email,
           randomKey: "123",
         };
